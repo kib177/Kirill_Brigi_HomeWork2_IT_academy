@@ -1,40 +1,295 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Калькулятор акций</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор усреднения акций</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .row-label {
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 30px;
+        }
+
+        input {
+            padding: 12px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .multiply {
+            padding: 0 5px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .currency-section {
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #e1e5eb;
+        }
+
+        .currency-section label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-right: 15px;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            width: 100%;
+            max-width: 200px;
+            cursor: pointer;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-submit {
+            background: #3498db;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-submit:hover {
+            background: #2980b9;
+        }
+
+        .btn-add {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #27ae60;
+        }
+
+        .btn-reset {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #c0392b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        @media (max-width: 600px) {
+            .input-row {
+                flex-wrap: wrap;
+            }
+
+            .row-label {
+                width: 100%;
+            }
+
+            .multiply {
+                display: none;
+            }
+
+            input {
+                width: calc(50% - 5px);
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-<form action="calculating_cost" method="POST">
+<div class="container">
+    <header>
+        <h1>Калькулятор усреднения стоимости акций</h1>
+    </header>
 
-    <b>Калькулятор усреднения стоимости акций</b>
-    <br><br>
-    1.<input name="num1" />
-    x <input name="num2" />
-    <br><br>
-    2.<input name="num1" />
-    x <input name="num2" />
-    <br><br>
-    3.<input name="num1" />
-    x <input name="num2" />
-    <br><br>
-    4.<input name="num1" />
-    x <input name="num2" />
-    <br><br>
-    5.<input name="num1" />
-    x <input name="num2" />
-    <br><br>
+    <div class="content">
+        <form action="calculating_cost" method="POST" id="calculatorForm">
+            <div class="form-group" id="inputRows">
+                <div class="input-row">
+                    <div class="row-label">1.</div>
+                    <input type="number" name="num1" placeholder="Количество" min="1" step="1" required>
+                    <div class="multiply">×</div>
+                    <input type="number" name="num2" placeholder="Цена за акцию" min="1" step="1" required>
+                </div>
 
-    Выберите валюту: <select name="currency">
-    <option>EUR</option>
-    <option>USD</option>
-    <option>USDT</option>
-    <option>BTC</option>
-    <option>RUB</option>
-    <option>BYN</option>
-</select>
-    <br><br>
-    <input type="submit" value="Вычислить" />
-</form>
+                <div class="input-row">
+                    <div class="row-label">2.</div>
+                    <input type="number" name="num1" placeholder="Количество" min="1" step="1" required>
+                    <div class="multiply">×</div>
+                    <input type="number" name="num2" placeholder="Цена за акцию" min="1" step="1" required>
+                </div>
+            </div>
+
+            <div class="currency-section">
+                <label for="currency">Выберите валюту:</label>
+                <select name="currency" id="currency">
+                    <option>EUR</option>
+                    <option>USD</option>
+                    <option>USDT</option>
+                    <option>BTC</option>
+                    <option>RUB</option>
+                    <option>BYN</option>
+                </select>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn btn-add" id="addRow">
+                    + Добавить строку
+                </button>
+                <button type="button" class="btn btn-reset" id="resetBtn">
+                    Сбросить
+                </button>
+                <button type="submit" class="btn btn-submit">
+                    Вычислить
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        <p>Калькулятор для расчета средней стоимости акций &copy; 2025 Кирилл Бриги</p>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addRowBtn = document.getElementById('addRow');
+        const resetBtn = document.getElementById('resetBtn');
+        const inputRows = document.getElementById('inputRows');
+        const calculatorForm = document.getElementById('calculatorForm');
+        const currencySelect = document.getElementById('currency');
+
+        let rowCount = 2; // Начальное количество строк
+
+        // Добавление новой строки
+        addRowBtn.addEventListener('click', function() {
+            rowCount++;
+            const newRow = document.createElement('div');
+            newRow.className = 'input-row';
+            newRow.innerHTML = `
+                    <div class="row-label">${rowCount}.</div>
+                    <input type="number" name="num1" placeholder="Количество" min="1" step="1" required>
+                    <div class="multiply">×</div>
+                    <input type="number" name="num2" placeholder="Цена за акцию" min="0.01" step="0.01" required>
+                `;
+            inputRows.appendChild(newRow);
+
+            // Прокрутка к новой строке
+            newRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Функция сброса формы
+        resetBtn.addEventListener('click', function() {
+            // Сбрасываем значения формы
+            calculatorForm.reset();
+
+            // Удаляем все строки, кроме первых двух
+            const rows = inputRows.querySelectorAll('.input-row');
+            for (let i = rows.length - 1; i >= 2; i--) {
+                rows[i].remove();
+            }
+
+            // Сбрасываем счётчик строк
+            rowCount = 2;
+
+            // Обновляем нумерацию оставшихся строк
+            const remainingRows = inputRows.querySelectorAll('.input-row');
+            remainingRows.forEach((row, index) => {
+                row.querySelector('.row-label').textContent = `${index + 1}.`;
+            });
+        });
+    });
+</script>
 </body>
 </html>

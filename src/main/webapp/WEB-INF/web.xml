@@ -5,7 +5,4 @@
          metadata-complete="false"
          version="5.0">
     <display-name>HWS</display-name>
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
 </web-app>
